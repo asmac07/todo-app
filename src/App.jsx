@@ -6,6 +6,7 @@ function App () {
   const [tasks , setTasks] = useState([])
   const [ input, setInput] = useState("")
   const [ greeting ,setGreeting ] = useState("")
+  const [search , setSearch ] = useState ("")
 
   useEffect (() =>{
 
@@ -63,14 +64,24 @@ function App () {
       
       <h2 className ="greet"> {greeting} , Asma!</h2>
       <input
+         className = "search-box"
+         type="text"
+         placeholder="Search tasks..."
+         value={search}
+         onChange={(e) => setSearch(e.target.value)}
+      /> 
+      <div className= "add-box">
+      <input
         type ="text"
         value= {input}
         onChange = { (e) => setInput(e.target.value)}
         />
         <button onClick = { addTask }> Add Task </button>
-
+      </div>
         <ul>
-          { tasks.map (( task, index ) =>(
+          { tasks
+          .filter ( task => task.text.toLowerCase().includes(search.toLowerCase()))
+          .map (( task, index ) =>(
             <li key ={ index } >
               <span 
                 onClick={()  => toggleTask(index)}
