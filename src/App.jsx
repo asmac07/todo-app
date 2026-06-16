@@ -5,6 +5,7 @@ import './App.css'
 function App () {
   const [tasks , setTasks] = useState([])
   const [ input, setInput] = useState("")
+  const [ greeting ,setGreeting ] = useState("")
 
   useEffect (() =>{
 
@@ -20,6 +21,22 @@ function App () {
     }
   } , [tasks])
 
+  useEffect ( () =>{
+    const hour = new Date().getHours()
+
+    if ( hour >= 5 && hour <12) 
+      setGreeting("Good Morning")
+
+      else if ( hour >=12 && hour < 17)
+        setGreeting("Good Afternoon")
+      
+      else if( hour>= 17 && hour < 21 )
+        setGreeting("Good Evening")
+
+      else 
+        setGreeting("Good night")
+      
+  })
   const addTask = () => {
 
     if ( input === "") return
@@ -43,6 +60,8 @@ function App () {
 
     <div className = "container">
       <h1> My To- Do App</h1>
+      
+      <h2 className ="greet"> {greeting} , Asma!</h2>
       <input
         type ="text"
         value= {input}
@@ -58,7 +77,7 @@ function App () {
                 style ={{
                   textDecoration: task.completed ? "line-through" :"none",
                   cursor : "pointer" ,
-                  color : task.completed ? "gray" : "black"
+                  color : task.completed ? "gray" : "white"
                 }}
                 >
 
