@@ -89,10 +89,29 @@ li {
   border-radius: 8px;
   margin-bottom: 10px;
   color: white;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 li button {
   background: #ff4757;
   padding: 5px 10px;
   font-size: 0.8rem;
+}
+li input {
+  flex: 1;
+  width: auto;
+  min-width: 120px;
+  margin-right: 0;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
+li span {
+  flex: 1;
+}
+
+li button {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
