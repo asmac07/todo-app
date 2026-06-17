@@ -7,6 +7,8 @@ function App () {
   const [ input, setInput] = useState("")
   const [ greeting ,setGreeting ] = useState("")
   const [search , setSearch ] = useState ("")
+  const [ editIndex, setEditIndex ]= useState(null)
+  const [editText , setEditText ] = useState("")
 
   useEffect (() =>{
 
@@ -37,7 +39,7 @@ function App () {
       else 
         setGreeting("Good night")
       
-  })
+  } ,[])
   const addTask = () => {
 
     if ( input === "") return
@@ -46,6 +48,7 @@ function App () {
     setInput("")
   }
 
+ 
   const deleteTask = ( index ) => {
     const newTasks = [...tasks]
     newTasks.splice( index, 1)
@@ -57,6 +60,21 @@ function App () {
   newTasks[index].completed = !newTasks[index].completed 
   setTasks(newTasks)  
 }
+
+   const editTask = ( index) => {
+    setEditIndex(index)
+    setEditText(tasks[index].text)
+  }
+
+  const saveTask = ( index) => {
+    const newTasks = [...tasks]
+    newTasks[index].text = editText 
+    setTasks(newTasks)
+    setEditIndex(null)
+    setEditText("")
+  }
+
+
   return (
 
     <div className = "container">
@@ -83,6 +101,17 @@ function App () {
           .filter ( task => task.text.toLowerCase().includes(search.toLowerCase()))
           .map (( task, index ) =>(
             <li key ={ index } >
+
+              { editIndex === index ? (
+                <>
+                <input 
+                value = { editText}
+                onChange = { (e) => setEditText ( e.target.value)}
+               />
+               <button onClick ={ () =>saveTask( index)}>Save </button>
+                </>
+              ) : (
+                <>
               <span 
                 onClick={()  => toggleTask(index)}
                 style ={{
@@ -94,8 +123,10 @@ function App () {
 
                { task.text}
                </span>
-                <button onClick= {() => deleteTask(index)}> delete </button>
-            
+               <button onClick = { () => editTask(index)}> Edit </button>
+               <button onClick= {() => deleteTask(index)}> delete </button>
+            </>
+              )}
             </li>
           ))}
         </ul>
