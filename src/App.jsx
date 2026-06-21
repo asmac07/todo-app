@@ -1,7 +1,7 @@
 
 import { useState , useEffect } from 'react'
 import './App.css'
-  
+import { useTheme } from './ThemeContext.jsx'  
 function App () {
   const [tasks , setTasks] = useState([])
   const [ input, setInput] = useState("")
@@ -9,6 +9,9 @@ function App () {
   const [search , setSearch ] = useState ("")
   const [ editIndex, setEditIndex ]= useState(null)
   const [editText , setEditText ] = useState("")
+  const [ sortOption, setSortOption ] = useState("")
+  const { isDark , setIsDark } = useTheme()
+
 
   useEffect (() =>{
 
@@ -74,38 +77,69 @@ function App () {
     setEditText("")
   }
 
+  const getSortedTasks = ( taskList ) => {
+
+    if ( sortOption === "az"){
+      return [...taskList].sort((a,b) => a.text.localeCompare(b.text))
+    }
+
+    if ( sortOption ==="za"){
+      return [...taskList].sort ((a,b) => b.text.localeCompare(a.text))
+    }
+   
+    if (sortOption ==="completed") {
+      return [...taskList].sort((a,b) => b.completed - a.completed)
+    }
+    return taskList
+  }
 
   return (
 
-    <div className = "container">
+    <div className = {`container ${isDark ? "dark" : "light"}`}>
       <h1> My To- Do App</h1>
-      
+      <button onClick={() => setIsDark(!isDark)}>
+
+         {isDark ? " Light Mode" : "Dark Mode"}
+
+    </button>
       <h2 className ="greet"> {greeting} , Asma!</h2>
+      <div className = "controls">
       <input
+
          className = "search-box"
          type="text"
          placeholder="Search tasks..."
          value={search}
          onChange={(e) => setSearch(e.target.value)}
+         
       /> 
+       <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+          <option value="">Sort By</option>
+          <option value="az">A-Z</option>
+          <option value="za">Z-A</option>
+          <option value="completed">Completed First</option>
+        </select>
+      </div>
       <div className= "add-box">
       <input
         type ="text"
+        placeholder='add tasks...'
         value= {input}
         onChange = { (e) => setInput(e.target.value)}
         />
         <button onClick = { addTask }> Add Task </button>
       </div>
         <ul>
-          { tasks
-          .filter ( task => task.text.toLowerCase().includes(search.toLowerCase()))
+          { getSortedTasks(
+           tasks.filter ( task => task.text.toLowerCase().includes(search.toLowerCase()))
+          )
           .map (( task, index ) =>(
             <li key ={ index } >
 
               { editIndex === index ? (
                 <>
                 <input 
-                value = { editText}
+                value = { editText }
                 onChange = { (e) => setEditText ( e.target.value)}
                />
                <button onClick ={ () =>saveTask( index)}>Save </button>
@@ -117,7 +151,7 @@ function App () {
                 style ={{
                   textDecoration: task.completed ? "line-through" :"none",
                   cursor : "pointer" ,
-                  color : task.completed ? "gray" : "white"
+                  color : task.completed ? "gray" : (isDark ? "white" : "black")
                 }}
                 >
 

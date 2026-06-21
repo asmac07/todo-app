@@ -1,3 +1,5 @@
+
+
 * {
   margin: 0;
   padding: 0;
@@ -21,8 +23,8 @@ body {
 }
 
 .search-box {
-  width: 100%;
-  margin-bottom: 15px;
+  
+  margin-bottom: 0;
 }
 
 .add-box {
@@ -114,4 +116,39 @@ li span {
 li button {
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.dark {
+  background: #1a1a2e;
+  color: white;
+}
+
+.light {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.dark input, .dark button, .dark li {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.light li {
+  background: white;
+  color: #333;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.controls select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
 }
